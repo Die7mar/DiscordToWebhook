@@ -1,0 +1,50 @@
+alias: Webhook licht
+description: ''
+trigger:
+  - platform: webhook
+    webhook_id: licht
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.json.value1 == "tv1" }}'
+          - condition: template
+            value_template: '{{ trigger.json.value2 == "an" }}'
+        sequence:
+          - type: turn_on
+            device_id: 730c60d578fbe803f6558e0d1723af0d
+            entity_id: light.tv1
+            domain: light
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.json.value1 == "tv1" }}'
+          - condition: template
+            value_template: '{{ trigger.json.value2 == "aus" }}'
+        sequence:
+          - type: turn_off
+            device_id: 730c60d578fbe803f6558e0d1723af0d
+            entity_id: light.tv1
+            domain: light
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.json.value1 == "pc" }}'
+          - condition: template
+            value_template: '{{ trigger.json.value2 == "aus" }}'
+        sequence:
+          - type: turn_off
+            device_id: 730c60d578fbe803f6558e0d1723af0d
+            entity_id: light.pc
+            domain: light
+      - conditions:
+          - condition: template
+            value_template: '{{ trigger.json.value1 == "pc" }}'
+          - condition: template
+            value_template: '{{ trigger.json.value2 == "an" }}'
+        sequence:
+          - type: turn_on
+            device_id: 730c60d578fbe803f6558e0d1723af0d
+            entity_id: light.pc
+            domain: light
+    default: []
+mode: single

@@ -1,0 +1,47 @@
+alias: Webhook status
+description: ''
+trigger:
+  - platform: webhook
+    webhook_id: status
+condition: []
+action:
+  - service: notify.discord
+    data:
+      target:
+        - 'DISCORD_CHANNEL_ID'
+      message: >-
+
+        ---------------------------------------------------------
+
+        Uhrzeit: {{ as_timestamp(states('sensor.date_time_iso'))
+        |timestamp_custom('%d.%m.%y %H:%M:%S ') }}
+
+        ---------------------------------------------------------
+
+        Temperaturen:
+
+        Arbeitszimmer:
+
+        :thermometer: {{ states('sensor.lumi_lumi_weather_X_temperature')
+        }} °C :droplet: {{ states('sensor.lumi_lumi_weather_X_humidity')
+        }} % :compression:  {{
+        states('sensor.lumi_lumi_weather_X_pressure') }} hPa
+
+        ---------------------------------------------------------
+
+        Türen: Haustür:  {% if
+        is_state('binary_sensor.lumi_lumi_sensor_magnet_aq2_on_off', 'on') %}
+        :thedoor:  {% else %} :door:  {% endif %} 
+
+        Lichter:  PC: {% if is_state('light.pc', 'on') %} :bulb:   {% else %}
+        :mobile_phone_off:  {% endif %}  TV1: {% if is_state('light.tv1', 'on')
+        %} :bulb:  {% else %} :mobile_phone_off:  {% endif %} TV2: {% if
+        is_state('light.tv2', 'on') %} :bulb:  {% else %} :mobile_phone_off:  {%
+        endif %} Arbeitszimmer: {% if is_state('switch.harmony_hub_licht', 'on')
+        %} :bulb:  {% else %} :mobile_phone_off:  {% endif %}
+
+        Steckdosen:  PC: {% if is_state('light.pc_steckdose', 'on') %} :bulb: 
+        {% else %} :mobile_phone_off:  {% endif %} TV1: {% if
+        is_state('light.tv_steckdose', 'on') %} :bulb:  {% else %}
+        :mobile_phone_off:  {% endif %}
+mode: single
